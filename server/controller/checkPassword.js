@@ -36,7 +36,6 @@ async function checkPassword(request, response) {
       success: true,
     });
   } catch (error) {
-    console.log(error);
     return response.status(500).json({
       message: error.message || error,
       error: true,
