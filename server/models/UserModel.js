@@ -1,28 +1,30 @@
 const mongoose = require("mongoose");
+
 const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      require: [true, "provide name"],
+      required: [true, "provide name"],
     },
     email: {
       type: String,
-      require: [true, "provide email"],
+      required: [true, "provide email"],
       unique: true,
     },
     password: {
       type: String,
-      require: [true, "provide password"],
-      select: false,
+      required: [true, "provide password"],
     },
     profile_pic: {
       type: String,
-      default: "https://res.cloudinary.com/dzcmadjlw/image/upload/v164372",
+      default: "",
     },
   },
   {
     timestamps: true,
   }
 );
+
 const UserModel = mongoose.model("User", userSchema);
+
 module.exports = UserModel;

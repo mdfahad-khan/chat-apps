@@ -4,24 +4,32 @@ const bcryptjs = require("bcryptjs");
 async function registerUser(request, response) {
   try {
     const { name, email, password, profile_pic } = request.body;
-    const checkEmail = await UserModel.findOne({ email });
+
+    const checkEmail = await UserModel.findOne({ email }); //{ name,email}  // null
+
     if (checkEmail) {
-      return response
-        .status(400)
-        .json({ message: "Email already exists", error: true });
+      return response.status(400).json({
+        message: "Already user exits",
+        error: true,
+      });
     }
+
+    //password into hashpassword
     const salt = await bcryptjs.genSalt(10);
-    const hasPassword = await bcryptjs.hash(password, salt);
+    const hashpassword = await bcryptjs.hash(password, salt);
+
     const payload = {
       name,
       email,
-      password: hasPassword,
       profile_pic,
+      password: hashpassword,
     };
+
     const user = new UserModel(payload);
     const userSave = await user.save();
+
     return response.status(201).json({
-      message: "User registered successfully",
+      message: "User created successfully",
       data: userSave,
       success: true,
     });
@@ -32,4 +40,5 @@ async function registerUser(request, response) {
     });
   }
 }
+
 module.exports = registerUser;

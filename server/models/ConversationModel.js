@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const messageSchema = new mongoose.Schema(
   {
     text: {
@@ -9,13 +10,18 @@ const messageSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    VideoUrl: {
+    videoUrl: {
       type: String,
       default: "",
     },
     seen: {
       type: Boolean,
       default: false,
+    },
+    msgByUserId: {
+      type: mongoose.Schema.ObjectId,
+      required: true,
+      ref: "User",
     },
   },
   {
@@ -26,18 +32,18 @@ const messageSchema = new mongoose.Schema(
 const conversationSchema = new mongoose.Schema(
   {
     sender: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.ObjectId,
       required: true,
       ref: "User",
     },
     receiver: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.ObjectId,
       required: true,
       ref: "User",
     },
     messages: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.ObjectId,
         ref: "Message",
       },
     ],
@@ -49,4 +55,8 @@ const conversationSchema = new mongoose.Schema(
 
 const MessageModel = mongoose.model("Message", messageSchema);
 const ConversationModel = mongoose.model("Conversation", conversationSchema);
-module.exports = { ConversationModel, MessageModel };
+
+module.exports = {
+  MessageModel,
+  ConversationModel,
+};

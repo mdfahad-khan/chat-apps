@@ -4,6 +4,7 @@ require("dotenv").config();
 const app = express();
 const connectDB = require("./config/connectDB");
 const router = require("./routes/index");
+const cookiesParser = require("cookie-parser");
 
 app.use(
   cors({
@@ -12,6 +13,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(cookiesParser);
 const PORT = process.env.PORT || 8080;
 app.get("/", (request, response) => {
   response.json({
