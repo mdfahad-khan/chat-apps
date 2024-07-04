@@ -6,7 +6,6 @@ const router = require("./routes/index");
 const cookiesParser = require("cookie-parser");
 const { app, server } = require("./socket/index");
 
-// const app = express()
 const allowedOrigins = process.env.FRONTEND_URLS
   ? process.env.FRONTEND_URLS.split(",")
   : [];
@@ -14,9 +13,8 @@ const allowedOrigins = process.env.FRONTEND_URLS
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin, like mobile apps or curl requests
+      console.log("Origin: ", origin);
       if (!origin) return callback(null, true);
-      // Check if the request origin is in the allowedOrigins array
       if (allowedOrigins.indexOf(origin) === -1) {
         const msg =
           "The CORS policy for this site does not allow access from the specified origin.";
@@ -24,8 +22,8 @@ app.use(
       }
       return callback(null, true);
     },
-    credentials: true, // Allows credentials (cookies, authorization headers)
-    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
 
