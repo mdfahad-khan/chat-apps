@@ -6,22 +6,24 @@ const router = require("./routes/index");
 const cookiesParser = require("cookie-parser");
 const { app, server } = require("./socket/index");
 
-// const app = express()
+// CORS configuration
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
     credentials: true,
   })
 );
+
 app.use(express.json());
 app.use(cookiesParser());
 
-app.use(function (request, response, next) {
-  response.header("Access-Control-Allow-Origin", "*");
+app.use((request, response, next) => {
+  response.header("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
   response.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
+  response.header("Access-Control-Allow-Credentials", "true");
   next();
 });
 
@@ -33,11 +35,11 @@ app.get("/", (request, response) => {
   });
 });
 
-//api endpoints
+// API endpoints
 app.use("/api", router);
 
 connectDB().then(() => {
   server.listen(PORT, () => {
-    console.log("server running at " + PORT);
+    console.log("Server running at " + PORT);
   });
 });
